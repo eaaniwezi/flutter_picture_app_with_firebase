@@ -3,7 +3,9 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_picture_app/bloc/auth/auth_bloc.dart';
+import 'package:firebase_picture_app/bloc/picture/picture_bloc.dart';
 import 'package:firebase_picture_app/bloc/register/register_bloc.dart';
+import 'package:firebase_picture_app/repository/picture_repository.dart';
 import 'package:firebase_picture_app/repository/user_repository.dart';
 import 'package:firebase_picture_app/screens/home_screen.dart';
 import 'package:firebase_picture_app/screens/login_screen.dart';
@@ -16,6 +18,7 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
   final userRepository = UserRepository();
+  final pictureRepository = PictureRepository();
 
   runApp(
     MultiBlocProvider(
@@ -34,6 +37,14 @@ void main() async {
             userRepository: userRepository,
           )..add(
               NoRegisterEvent(),
+            ),
+        ),
+        BlocProvider(
+          create: (context) => PictureBloc(
+            pictureInitState: PictureInitialState(),
+            pictureRepository: pictureRepository,
+          )..add(
+              NoPictureEvent(),
             ),
         ),
       ],
