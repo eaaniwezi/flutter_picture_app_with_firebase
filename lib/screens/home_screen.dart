@@ -1,5 +1,6 @@
 // ignore_for_file: prefer_const_constructors
 
+import 'package:firebase_picture_app/widgets/app_bar_drawer.dart';
 import 'package:flutter/material.dart';
 
 class HomeScreen extends StatelessWidget {
@@ -8,6 +9,7 @@ class HomeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.white,
       appBar: AppBar(
         elevation: 0,
         centerTitle: true,
@@ -15,10 +17,11 @@ class HomeScreen extends StatelessWidget {
         title: Text(
           "welcome",
           style: TextStyle(
-            color: Colors.red,
+            color: Color(0xff182647),
           ),
         ),
       ),
+      drawer: AppBarDrawer(),
     );
   }
 }

@@ -1,11 +1,11 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:logger/logger.dart';
 
 class UserRepository {
+  String collection = "users";
   final firebaseAuth = FirebaseAuth.instance;
-  
-
-
+  final FirebaseFirestore _firebaseFirestore = FirebaseFirestore.instance;
 
   // UserRepository({FirebaseAuth? firebaseAuth}) : _firebaseAuth = firebaseAuth!;
 
@@ -32,19 +32,16 @@ class UserRepository {
     return firebaseAuth.signInWithCredential(authCredential);
   }
 
+  Future signOut() async {
+    firebaseAuth.signOut();
+  }
+
   Future<User?> getUser() async {
     var user = firebaseAuth.currentUser;
-     print(user.toString() + " this is the token");
     return user;
   }
 
-
-
-  // final FirebaseFirestore _firebaseFirestore = FirebaseFirestore.instance;
-  // String collection = "users";
-
-  // createUserCollectionInFireStore(Map<String, dynamic> data) async {
-  //   await _firebaseFirestore.collection(collection).doc(data["uid"]).set(data);
-  // }
-
+  createUserCollectionInFireStore(Map<String, dynamic> data) async {
+    await _firebaseFirestore.collection(collection).doc(data["uid"]).set(data);
+  }
 }

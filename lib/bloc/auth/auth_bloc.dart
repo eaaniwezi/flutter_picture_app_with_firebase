@@ -6,12 +6,14 @@ import 'package:firebase_auth/firebase_auth.dart';
 
 import 'package:firebase_picture_app/models/user_model.dart';
 import 'package:firebase_picture_app/repository/user_repository.dart';
+import 'package:logger/logger.dart';
 
 part 'auth_event.dart';
 part 'auth_state.dart';
 
 class AuthBloc extends Bloc<AuthEvent, AuthState> {
   final UserRepository userRepository;
+  var log = Logger();
 
   AuthBloc({
     required InitialAuthenticationState authInitState,
@@ -25,21 +27,44 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     if (event is NoEvent) {
       final bool hasToken = await userRepository.getUser() != null;
       print(hasToken.toString() + " this is the token");
-      if (hasToken) {
-        yield Authenticated();
-      } else {
-        yield Unauthenticated();
+      try {
+        late User? _user;
+        _user = await userRepository.getUser();
+
+        if (hasToken) {
+          yield Authenticated(user: _user!);
+        } else {
+          yield Unauthenticated();
+        }
+      } catch (e) {
+        log.wtf(e);
       }
     }
 
     if (event is LoggedInEvent) {
+      late User? _userModel;
+      _userModel = await userRepository.getUser();
+
       yield Loading();
-      yield Authenticated();
+      yield Authenticated(user: _userModel!);
     }
 
     if (event is LogOutEvent) {
-      yield Loading();
+      // yield Loading();
+      userRepository.signOut();
       yield Unauthenticated();
     }
+  }
+
+  @override
+  void onChange(Change<AuthState> change) {
+    log.i(change.currentState);
+    super.onChange(change);
+  }
+
+  @override
+  void onEvent(AuthEvent event) {
+    log.i(event);
+    super.onEvent(event);
   }
 }

@@ -36,7 +36,6 @@ class RegisterBloc extends Bloc<RegisterEvent, RegisterState> {
       yield OtpSentState();
     } else if (event is LoginCompleteEvent) {
       yield RegisterCompleteState(event.firebaseUser);
-      
     } else if (event is LoginExceptionEvent) {
       yield ExceptionState(message: event.message);
     } else if (event is VerifyOtpEvent) {
@@ -46,6 +45,10 @@ class RegisterBloc extends Bloc<RegisterEvent, RegisterState> {
             await userRepository.verifyAndLogin(verID, event.otp);
         if (result.user != null) {
           yield RegisterCompleteState(result.user!);
+          userRepository.createUserCollectionInFireStore({
+            'uid': result.user!.uid,
+            'phoneNumber': result.user!.phoneNumber,
+          });
         } else {
           yield OtpExceptionState(message: "Invalid otp!");
         }

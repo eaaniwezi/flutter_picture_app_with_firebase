@@ -1,10 +1,7 @@
-// ignore_for_file: prefer_const_constructors
+// ignore_for_file: prefer_const_constructors, avoid_print
 
-import 'package:firebase_picture_app/bloc/auth/auth_bloc.dart';
 import 'package:firebase_picture_app/bloc/register/register_bloc.dart';
 import 'package:firebase_picture_app/screens/otp_screen.dart';
-import 'package:firebase_picture_app/screens/splash_screen.dart';
-import 'package:firebase_picture_app/utils/edited_plugin.dart';
 import 'package:firebase_picture_app/widgets/button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';

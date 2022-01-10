@@ -11,7 +11,12 @@ class InitialAuthenticationState extends AuthState {}
 
 class Uninitialized extends AuthState {}
 
-class Authenticated extends AuthState {}
+class Authenticated extends AuthState {
+  final User user;
+  const Authenticated({
+    required this.user,
+  });
+}
 
 class Unauthenticated extends AuthState {}
 
