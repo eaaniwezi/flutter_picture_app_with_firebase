@@ -34,6 +34,7 @@ class RegisterBloc extends Bloc<RegisterEvent, RegisterState> {
         add(event);
       });
 
+      yield PhoneNumberSentState();
     } else if (event is OtpSendEvent) {
       yield OtpSentState();
     } else if (event is LoginCompleteEvent) {

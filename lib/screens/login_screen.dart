@@ -46,7 +46,7 @@ class _LoginScreenState extends State<LoginScreen> {
               // Get.to(() => SlapshScreen(
               //       description: "Отправка запроса....",
               //     ));
-            } else if (state is OtpSentState) {
+            } else if (state is OtpSentState || state is PhoneNumberSentState) {
               Get.to(() => OtpScreen());
             }
           },
@@ -74,7 +74,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       });
                     },
                     selectorConfig: SelectorConfig(
-                      selectorType: PhoneInputSelectorType.BOTTOM_SHEET,
+                      selectorType: PhoneInputSelectorType.DROPDOWN,
                     ),
                     ignoreBlank: false,
                     autoValidateMode: AutovalidateMode.disabled,
@@ -89,7 +89,8 @@ class _LoginScreenState extends State<LoginScreen> {
                   ),
                 ),
               ),
-              ButtonContainer(bottonHeight: true,
+              ButtonContainer(
+                bottonHeight: true,
                 label:
                     isLoading == true ? "Отправка запроса...." : "Продолжить",
                 onPressed: isLoading == true
@@ -107,7 +108,7 @@ class _LoginScreenState extends State<LoginScreen> {
                             SendOtpEvent(phoNo: completeNumber),
                           );
                         }
-                      }, 
+                      },
               ),
             ],
           ),

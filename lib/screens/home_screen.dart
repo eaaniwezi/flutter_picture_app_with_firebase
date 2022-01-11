@@ -83,7 +83,6 @@ class _HomeScreenState extends State<HomeScreen> {
       body: BlocListener<PictureBloc, PictureState>(
         // listenWhen: (oldState, newState) => newState is PictureLoadedState,
         listener: (context, state) {
-          print(state.toString() + " this is my pics state");
           if (state is PictureLoadingState) {
             setState(() {
               isLoading = true;
