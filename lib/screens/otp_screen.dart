@@ -23,7 +23,7 @@ class _OtpScreenState extends State<OtpScreen> {
   TextEditingController codeController = TextEditingController();
   String enteredCode = "";
   bool isCodeTrue = false;
-  var log = Logger();
+  
   @override
   void initState() {
     super.initState();
@@ -50,13 +50,13 @@ class _OtpScreenState extends State<OtpScreen> {
       ),
       body: BlocListener<RegisterBloc, RegisterState>(
         listener: (context, state) {
-          log.d(state);
+        
           if (state is OtpExceptionState || state is ExceptionState) {
             setState(() {
               isCodeTrue = true;
             });
           } else if (state is RegisterCompleteState) {
-            print(state.getUser().uid.toString() + " this os the user id");
+    
             BlocProvider.of<AuthBloc>(context)
                 .add(LoggedInEvent(token: state.getUser().uid));
             Get.to(() => HomeScreen());
@@ -83,7 +83,7 @@ class _OtpScreenState extends State<OtpScreen> {
                 ),
               ),
               _wrongCodeInfo(),
-              ButtonContainer(
+              ButtonContainer(bottonHeight: true,
                 label: "отправить код",
                 onPressed: () async {
                   if (codeController.text.length == 6) {

@@ -22,7 +22,6 @@ class _LoginScreenState extends State<LoginScreen> {
   dynamic isFieldValid = false;
   dynamic fullPhoneNumber = "";
   bool isLoading = false;
-  var log = Logger();
   String initialCountry = 'RU';
   PhoneNumber number = PhoneNumber(isoCode: 'RU');
   final _formKey = GlobalKey<FormState>();
@@ -40,7 +39,6 @@ class _LoginScreenState extends State<LoginScreen> {
         child: BlocListener<RegisterBloc, RegisterState>(
           // listenWhen: (oldState, newState) => newState is OtpSentState,
           listener: (context, state) {
-            log.d(state);
             if (state is LoadingState) {
               setState(() {
                 isLoading = true;
@@ -87,13 +85,11 @@ class _LoginScreenState extends State<LoginScreen> {
                     keyboardType: TextInputType.numberWithOptions(
                         signed: true, decimal: true),
                     inputBorder: OutlineInputBorder(),
-                    onSaved: (PhoneNumber number) {
-                      print('On Saved: $number');
-                    },
+                    onSaved: (PhoneNumber number) {},
                   ),
                 ),
               ),
-              ButtonContainer(
+              ButtonContainer(bottonHeight: true,
                 label:
                     isLoading == true ? "Отправка запроса...." : "Продолжить",
                 onPressed: isLoading == true
@@ -106,15 +102,12 @@ class _LoginScreenState extends State<LoginScreen> {
                           var completeNumber = fullPhoneNumber.toString();
 
                           final signCode = await SmsAutoFill().getAppSignature;
-                          print(signCode.toString() + " signCode");
+
                           BlocProvider.of<RegisterBloc>(context).add(
                             SendOtpEvent(phoNo: completeNumber),
                           );
                         }
-                        // context
-                        //     .read<AuthBloc>()
-                        //     .add(OnSubmitPhoneNumberEvent(phoneNumber: "phoneNumber"));
-                      },
+                      }, 
               ),
             ],
           ),

@@ -66,7 +66,7 @@ class MyApp extends StatelessWidget {
       ),
       home: BlocBuilder<AuthBloc, AuthState>(
         builder: (context, state) {
-          print(state.toString() + " this is your state");
+         
           if (state is Uninitialized) {
             return SlapshScreen();
           } else if (state is Unauthenticated) {

@@ -14,6 +14,11 @@ class InitialRegisterState extends RegisterState {
   @override
   List<Object> get props => [];
 }
+//*
+class PhoneNumberSentState extends RegisterState {
+  @override
+  List<Object> get props => [];
+}
 
 //*
 class OtpSentState extends RegisterState {

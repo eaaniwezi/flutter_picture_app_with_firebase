@@ -18,7 +18,6 @@ class AppBarDrawer extends StatelessWidget {
     return BlocListener<AuthBloc, AuthState>(
       listenWhen: (oldState, newState) => newState is Unauthenticated,
       listener: (context, state) {
-        print(state.toString() + " ur 1st new state");
         Get.to(() => LoginScreen());
       },
       child: blocAppBarBuilder(),
@@ -29,10 +28,9 @@ class AppBarDrawer extends StatelessWidget {
     var log = Logger();
     return BlocBuilder<AuthBloc, AuthState>(
       builder: (context, state) {
-        print(state.toString() + " ur 2nd new state");
         if (state is Authenticated) {
           dynamic userModel = state.user;
-          log.e(userModel);
+          log.v(userModel);
           return Drawer(
             child: ListView(
               children: [

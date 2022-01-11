@@ -18,10 +18,18 @@ class PictureFetchedState extends PictureState {
   });
 }
 
+class PictureErrorState extends PictureState {}
+
+//*
 class PictureFetchingErrorState extends PictureState {}
 
 class PictureLoadingState extends PictureState {}
 
 class PictureLoadedState extends PictureState {}
 
-class PictureErrorState extends PictureState {}
+//*
+class PictureDeletingState extends PictureState {}
+
+class PictureDeletedState extends PictureState {}
+
+class PictureErrorDeletingState extends PictureState {}

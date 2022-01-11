@@ -15,3 +15,11 @@ class OnTapEvent extends PictureEvent {
     required this.image,
   });
 }
+
+class DetelePictureEvent extends PictureEvent {
+  final PictureModel pictureModel;
+
+  const DetelePictureEvent({
+    required this.pictureModel,
+  });
+}

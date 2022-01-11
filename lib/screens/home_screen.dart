@@ -35,7 +35,7 @@ class _HomeScreenState extends State<HomeScreen> {
         centerTitle: true,
         backgroundColor: Colors.white,
         title: Text(
-          "welcome",
+          "Привет😉",
           style: TextStyle(
             color: Color(0xff182647),
           ),
@@ -62,7 +62,7 @@ class _HomeScreenState extends State<HomeScreen> {
                               _image = File(image!.path);
                             });
                           },
-                          child: Text('камера')),
+                          child: Text('с камеры')),
                       //**** */
                       TextButton(
                         onPressed: () async {
@@ -74,15 +74,16 @@ class _HomeScreenState extends State<HomeScreen> {
                             _image = File(image!.path);
                           });
                         },
-                        child: Text('галерея'),
+                        child: Text('из галереи'),
                       )
                     ],
                   ));
-        },
+        }, bottonHeight: false,
       ),
       body: BlocListener<PictureBloc, PictureState>(
-        listenWhen: (oldState, newState) => newState is PictureLoadedState,
+        // listenWhen: (oldState, newState) => newState is PictureLoadedState,
         listener: (context, state) {
+          print(state.toString() + " this is my pics state");
           if (state is PictureLoadingState) {
             setState(() {
               isLoading = true;
@@ -145,48 +146,41 @@ class _HomeScreenState extends State<HomeScreen> {
               )
             : BlocBuilder<PictureBloc, PictureState>(
                 builder: (context, state) {
-                  print(state.toString() + " ijhfdgkklthfhgfgf");
                   if (state is PictureFetchedState) {
                     List<PictureModel> pictureList = state.pictureItemModelList;
 
-                    return GridView.builder(
-                      physics: ScrollPhysics(),
-                      shrinkWrap: true,
-                      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                        crossAxisCount: 2,
-                        // childAspectRatio: (3 / 2),
-                      ),
-                      itemCount: pictureList.length,
-                      itemBuilder: (BuildContext context, int index) {
-                        final pictureModel = pictureList[index];
-                        return ImageModel(
-                          pictureModel: pictureModel,
-                        );
-                      },
-                    );
-                  } else if (state is PictureFetchingState) {
-                    Center(
-                        child: CircularProgressIndicator(
-                            color: Color(0xff182647)));
+                    return pictureList.isEmpty
+                        ? Center(
+                            child: Padding(
+                              padding: const EdgeInsets.all(20.0),
+                              child: Text(
+                                "Нажмите на кнопку ниже, чтобы добавить несколько фотографий😉",
+                                textAlign: TextAlign.center,
+                              ),
+                            ),
+                          )
+                        : GridView.builder(
+                            physics: ScrollPhysics(),
+                            shrinkWrap: true,
+                            gridDelegate:
+                                SliverGridDelegateWithFixedCrossAxisCount(
+                              crossAxisCount: 2,
+                              // childAspectRatio: (3 / 2),
+                            ),
+                            itemCount: pictureList.length,
+                            itemBuilder: (BuildContext context, int index) {
+                              final pictureModel = pictureList[index];
+                              return ImageModel(
+                                pictureModel: pictureModel,
+                              );
+                            },
+                          );
                   }
                   return Center(
                       child:
                           CircularProgressIndicator(color: Color(0xff182647)));
                 },
               ),
-        // : StreamBuilder<QuerySnapshot>(
-        //     stream: FirebaseFirestore.instance
-        //         .collection("pictures")
-        //         .doc("LpKzm7vosvMVcajET1k3b9ZJwGX2")
-        //         .collection("Userpictures")
-        //         .snapshots(),
-        //     builder: (context, snapshot) {
-        //       print(snapshot.connectionState);
-        //       print(snapshot.data!.docs.length.toString());
-        //       print(snapshot.data!.docs);
-        //       return Text("Empty");
-        //     },
-        //   ),
       ),
     );
   }

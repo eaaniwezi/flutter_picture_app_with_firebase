@@ -26,7 +26,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
   Stream<AuthState> mapEventToState(AuthEvent event) async* {
     if (event is NoEvent) {
       final bool hasToken = await userRepository.getUser() != null;
-      print(hasToken.toString() + " this is the token");
+     
       try {
         late User? _user;
         _user = await userRepository.getUser();
@@ -37,7 +37,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
           yield Unauthenticated();
         }
       } catch (e) {
-        log.wtf(e);
+        log.w(e);
       }
     }
 
@@ -58,13 +58,13 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
 
   @override
   void onChange(Change<AuthState> change) {
-    log.i(change.currentState);
+  log.w(change.currentState);
     super.onChange(change);
   }
 
   @override
   void onEvent(AuthEvent event) {
-    log.i(event);
+   log.w(event);
     super.onEvent(event);
   }
 }

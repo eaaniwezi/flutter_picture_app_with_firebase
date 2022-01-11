@@ -1,13 +1,14 @@
-
 import 'package:flutter/material.dart';
 
 class ButtonContainer extends StatelessWidget {
   final String label;
   final Function onPressed;
+  final bool bottonHeight;
   const ButtonContainer({
     Key? key,
-    required this.onPressed,
     required this.label,
+    required this.onPressed,
+    required this.bottonHeight,
   }) : super(key: key);
 
   @override
@@ -16,7 +17,7 @@ class ButtonContainer extends StatelessWidget {
       padding: EdgeInsets.only(
         left: 40,
         right: 40,
-        top:  MediaQuery.of(context).size.height * 0.2 ,
+        top: bottonHeight == true ? MediaQuery.of(context).size.height * 0.2 : 0,
         bottom: 15,
       ),
       child: InkWell(

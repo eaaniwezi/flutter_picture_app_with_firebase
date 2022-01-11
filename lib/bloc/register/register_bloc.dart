@@ -1,4 +1,4 @@
-// ignore_for_file: prefer_function_declarations_over_variables, avoid_print, avoid_renaming_method_parameters
+// ignore_for_file: prefer_function_declarations_over_variables, avoid_print, avoid_renaming_method_parameters, non_constant_identifier_names, unnecessary_this
 
 import 'dart:async';
 
@@ -6,6 +6,7 @@ import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_picture_app/repository/user_repository.dart';
+import 'package:logger/logger.dart';
 
 part 'register_event.dart';
 part 'register_state.dart';
@@ -13,7 +14,7 @@ part 'register_state.dart';
 class RegisterBloc extends Bloc<RegisterEvent, RegisterState> {
   final UserRepository userRepository;
   StreamSubscription? subscription;
-
+  var log = Logger();
   String verID = "";
   RegisterBloc({
     required InitialRegisterState authInitState,
@@ -32,6 +33,7 @@ class RegisterBloc extends Bloc<RegisterEvent, RegisterState> {
       subscription = sendOtp(event.phoNo).listen((event) {
         add(event);
       });
+
     } else if (event is OtpSendEvent) {
       yield OtpSentState();
     } else if (event is LoginCompleteEvent) {
@@ -54,7 +56,6 @@ class RegisterBloc extends Bloc<RegisterEvent, RegisterState> {
         }
       } catch (e) {
         yield OtpExceptionState(message: "Invalid otp!");
-        print(e);
       }
     }
   }
@@ -63,15 +64,12 @@ class RegisterBloc extends Bloc<RegisterEvent, RegisterState> {
     StreamController<RegisterEvent> eventStream = StreamController();
     final PhoneVerificationCompleted = (AuthCredential authCredential) {
       userRepository.getUser();
-      userRepository.getUser().catchError((onError) {
-        print(onError);
-      }).then((user) {
+      userRepository.getUser().catchError((onError) {}).then((user) {
         eventStream.add(LoginCompleteEvent(user!));
         eventStream.close();
       });
     };
     final PhoneVerificationFailed = (dynamic authException) {
-      print(authException.message);
       eventStream.add(LoginExceptionEvent(onError.toString()));
       eventStream.close();
     };
@@ -86,7 +84,7 @@ class RegisterBloc extends Bloc<RegisterEvent, RegisterState> {
 
     await userRepository.sendOtp(
         phoNo,
-        Duration(seconds: 1),
+        const Duration(seconds: 1),
         PhoneVerificationFailed,
         PhoneVerificationCompleted,
         PhoneCodeSent,
@@ -97,13 +95,13 @@ class RegisterBloc extends Bloc<RegisterEvent, RegisterState> {
 
   @override
   void onChange(Change<RegisterState> change) {
-    print(change.currentState);
+    log.w(change.currentState);
     super.onChange(change);
   }
 
   @override
   void onEvent(RegisterEvent event) {
-    print(event);
+    log.w(event);
     super.onEvent(event);
   }
 }

@@ -9,7 +9,7 @@ import 'package:uuid/uuid.dart';
 class PictureRepository {
   String collection = "pictures";
   String collectionName = "Userpictures";
-  var log = Logger();
+
   final FirebaseFirestore _firebaseFirestore = FirebaseFirestore.instance;
   final FirebaseStorage firebaseStorage = FirebaseStorage.instance;
 
@@ -30,7 +30,7 @@ class PictureRepository {
   Future<String> sendAndStorePicturesInDb(dynamic image) async {
     final String picture =
         "${DateTime.now().millisecondsSinceEpoch.toString()}.jpg}";
-    log.v(picture);
+
     TaskSnapshot snapshot =
         await firebaseStorage.ref().child(picture).putFile(image);
 
@@ -41,19 +41,35 @@ class PictureRepository {
     return snapshot.ref.getDownloadURL();
   }
 
+  Future<bool> deletePictureFromDbAndStorage(
+      PictureModel pictureModel, dynamic currentUserId) async {
+    await _firebaseFirestore
+        .collection(collection)
+        .doc(currentUserId)
+        .collection(collectionName)
+        .where('id', isEqualTo: pictureModel.id)
+        .get()
+        .then((pictureItem) async {
+      for (DocumentSnapshot picture in pictureItem.docs) {
+        await picture.reference.delete();
+      }
+    });
+    await firebaseStorage.refFromURL(pictureModel.picture).delete();
+    return true;
+  }
+
   Future<List<PictureModel>> getUserPictures(dynamic currentUserId) async =>
       _firebaseFirestore
           .collection(collection)
           .doc(currentUserId)
           .collection(collectionName)
+          // .where('id', isEqualTo: currentUserId)
           .get()
           .then((result) {
         List<PictureModel> pictures = [];
         for (DocumentSnapshot picture in result.docs) {
           pictures.add(PictureModel.fromSnapshot(picture));
-          log.wtf(pictures.length);
         }
-
         return pictures;
       });
 }
