@@ -10,7 +10,7 @@ abstract class PictureEvent extends Equatable {
 class NoPictureEvent extends PictureEvent {}
 
 class OnTapEvent extends PictureEvent {
-  final XFile image;
+  final dynamic image;
   const OnTapEvent({
     required this.image,
   });

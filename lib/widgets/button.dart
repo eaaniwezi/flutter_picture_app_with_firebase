@@ -16,7 +16,7 @@ class ButtonContainer extends StatelessWidget {
       padding: EdgeInsets.only(
         left: 40,
         right: 40,
-        top: MediaQuery.of(context).size.height * 0.2,
+        top:  MediaQuery.of(context).size.height * 0.2 ,
         bottom: 15,
       ),
       child: InkWell(
@@ -32,7 +32,7 @@ class ButtonContainer extends StatelessWidget {
           child: Center(
             child: Text(
               label,
-              style: TextStyle(
+              style: const TextStyle(
                 color: Colors.white,
               ),
             ),

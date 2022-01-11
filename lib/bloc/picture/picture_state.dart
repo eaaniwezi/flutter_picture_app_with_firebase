@@ -9,6 +9,17 @@ abstract class PictureState extends Equatable {
 
 class PictureInitialState extends PictureState {}
 
+class PictureFetchingState extends PictureState {}
+
+class PictureFetchedState extends PictureState {
+  final List<PictureModel> pictureItemModelList;
+  const PictureFetchedState({
+    required this.pictureItemModelList,
+  });
+}
+
+class PictureFetchingErrorState extends PictureState {}
+
 class PictureLoadingState extends PictureState {}
 
 class PictureLoadedState extends PictureState {}

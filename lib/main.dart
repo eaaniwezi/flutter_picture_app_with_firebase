@@ -42,7 +42,7 @@ void main() async {
         BlocProvider(
           create: (context) => PictureBloc(
             pictureInitState: PictureInitialState(),
-            pictureRepository: pictureRepository,
+            pictureRepository: pictureRepository, userRepository: userRepository,
           )..add(
               NoPictureEvent(),
             ),
