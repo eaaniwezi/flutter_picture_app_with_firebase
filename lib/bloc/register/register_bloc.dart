@@ -34,7 +34,7 @@ class RegisterBloc extends Bloc<RegisterEvent, RegisterState> {
         add(event);
       });
 
-      yield PhoneNumberSentState();
+      // yield PhoneNumberSentState();
     } else if (event is OtpSendEvent) {
       yield OtpSentState();
     } else if (event is LoginCompleteEvent) {
@@ -66,7 +66,9 @@ class RegisterBloc extends Bloc<RegisterEvent, RegisterState> {
     final PhoneVerificationCompleted = (AuthCredential authCredential) {
       userRepository.getUser();
       userRepository.getUser().catchError((onError) {}).then((user) {
-        eventStream.add(LoginCompleteEvent(user!));
+        if (user != null) {
+          eventStream.add(LoginCompleteEvent(user));
+        }
         eventStream.close();
       });
     };
@@ -85,7 +87,7 @@ class RegisterBloc extends Bloc<RegisterEvent, RegisterState> {
 
     await userRepository.sendOtp(
         phoNo,
-        const Duration(seconds: 1),
+        const Duration(seconds: 30),
         PhoneVerificationFailed,
         PhoneVerificationCompleted,
         PhoneCodeSent,

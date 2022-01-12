@@ -39,6 +39,7 @@ class _LoginScreenState extends State<LoginScreen> {
         child: BlocListener<RegisterBloc, RegisterState>(
           // listenWhen: (oldState, newState) => newState is OtpSentState,
           listener: (context, state) {
+            print(state.toString() + " my state");
             if (state is LoadingState) {
               setState(() {
                 isLoading = true;
@@ -46,7 +47,12 @@ class _LoginScreenState extends State<LoginScreen> {
               // Get.to(() => SlapshScreen(
               //       description: "Отправка запроса....",
               //     ));
-            } else if (state is OtpSentState || state is PhoneNumberSentState) {
+            } else if (state is ExceptionState || state is OtpExceptionState) {
+              setState(() {
+                isLoading = false;
+              });
+              Fluttertoast.showToast(msg: "Ошибка!! Попробуйте еще раз позже");
+            } else if (state is OtpSentState) {
               Get.to(() => OtpScreen());
             }
           },
@@ -107,6 +113,7 @@ class _LoginScreenState extends State<LoginScreen> {
                           BlocProvider.of<RegisterBloc>(context).add(
                             SendOtpEvent(phoNo: completeNumber),
                           );
+                          print("testss");
                         }
                       },
               ),
